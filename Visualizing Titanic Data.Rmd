@@ -1,0 +1,147 @@
+---
+title: "Visualizing Titanic Data"
+author: "Kelvin Nyongesa"
+date: "19/03/2022"
+output: html_document
+---
+
+In this project I used the Titanic data from kaggle to answer some questions about the titanic.
+
+<!----First load the packages to use here.----->
+```{r}
+#First load the packages to use here
+library(ggplot2)
+install.packages("readr")
+library(readr)
+```
+
+<!---------I used the Titanic data set from Kaggle----->
+```{r}
+#I used the Titanic data set from Kaggle
+titanic <- read.csv("C:/Users/NYongESA/Documents/R_space/Visualize-Titanic-Data-master/data/train.csv")
+View(titanic)
+
+```
+
+<!--Set up as factors to use in color-coding our visualization-->
+```{r}
+#Set up as factors to use in color-coding our visualization
+titanic$Pclass <-as.factor(titanic$Pclass)
+titanic$Survived <- as.factor(titanic$Survived)
+titanic$Sex <- as.factor(titanic$Sex)
+titanic$Embarked <- as.factor(titanic$Embarked)
+```
+<!--Survived is a categorical variable a bar chat was the best to use to show count--> 
+```{r}
+#Q1. What was the survival rate
+
+ggplot(titanic, aes(x = Survived)) + theme_classic()+
+  geom_bar() +
+  labs( title = "Bar Chart Showing the Survival Rate in The Titanic",
+        y = "Passenger count",
+        caption = "Twitter @nyongesa")
+
+```
+
+<!-------Q1. What is the survival rate by gender?------------------->
+```{r}
+#Q2. What is the survival rate by gender?
+
+ggplot(titanic, aes(x = Sex, fill = Survived)) +
+  theme_classic() +
+  geom_bar() +
+  labs( title = "Bar Chart Showing the Survival Rate by Gender",
+        y = "Passenger count",
+        caption = "Twitter @nyongesa")
+
+# From the bar chart, I can observe, there were more male passengers than female passengers in the ship
+# More female passengers survived than male passengers.
+# what are your observations?
+
+```
+
+<!------------What was the survival rate by class ticket---------->
+```{r}
+#Q3. What was the survival rate by class ticket
+
+ggplot(titanic, aes(x = Pclass, fill = Survived)) +
+  theme_classic() +
+  geom_bar() +
+  labs( title = "Bar Chart Showing the Survival Rate by Passenger class tickets",
+        y = "Passenger count",
+        caption = "Twitter @nyongesa")
+
+# Observations
+# more than half of the 1st class passengers survived
+# 3rd class had the most passengers in the ship
+# most 3rd class passengers didn't survive
+```
+
+<!--------------------->
+```{r}
+#Q4. What was the survival rate by class tickets and gender
+
+ggplot(titanic, aes(x = Sex, fill = Survived)) +
+  theme_bw() +
+  facet_wrap(~ Pclass) +
+  geom_bar() +
+  labs( title = "Bar Chart Showing the Survival Rate by Passenger class tickets and gender",
+        y = "Passenger count",
+        caption = "Twitter @nyongesa")
+```
+
+
+<!----Q5. What is the distribution of passenger ages?---->
+.
+```{r}
+#What is the distribution of passenger ages?
+#To achieve this we visualize numerical data on a histogram
+ggplot(titanic, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  geom_histogram(binwidth = 7) +
+  labs( title = "Titanic Passangers Age Distribution",
+        y = "Passenger count",
+        caption = "Twitter @nyongesa")
+
+#From he histogram, one can observe the relative proportion of survival by age.
+
+```
+
+<!--numeric data can also be represented in a box-plot that-->
+```{r}
+#What is the survival rate by age
+ggplot(titanic, aes(x = Survived, y = Age)) +
+  theme_bw() +
+  geom_boxplot() +
+  labs( title = "BoxPlot Representing Survival rate by Age",
+        y = "Passenger count",
+        caption = "Twitter @nyongesa")
+```
+
+<!---------------A density plot---  ---->
+```{r}
+#Q7. What is the survival rate by age when segmented by gender an class ticket?
+ggplot(titanic, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  facet_wrap(Sex ~Pclass) +
+  geom_density(alpha = 0.6) +
+  labs( x = "Survived",
+        y = "Age",
+        title = "Titanic Survival Rate by Age, Pclass & Sex",
+        caption = "Twitter @nyongesa")
+
+```
+
+<!-----Histogram representing the solution to Q7 above----->
+```{r}
+ggplot(titanic, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  facet_wrap(Sex ~Pclass) +
+  geom_histogram() +
+  labs( x = "Survived",
+        y = "Age",
+        title = "Titanic Survival Rate by Age, Pclass & Sex",
+        caption = "Twitter @nyongesa")
+
+```
+
